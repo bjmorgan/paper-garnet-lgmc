@@ -1,0 +1,140 @@
+% \documentclass[aip,apl]{revtex4-1}
+% \documentclass[aps,prl,preprint,groupedaddress]{revtex4-1}
+\documentclass[aps,prl,twocolumn,superscriptaddress,reprint]{revtex4-1}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+% \usepackage[pdfusetitle]{hyperref}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\graphicspath{{Figures/}}
+\newcommand{\Li}[1]{Li$_{#1}$}
+
+\include{user_commands}
+\include{amsmath}
+
+\begin{document}
+
+\title{TITLE}
+\author{Benjamin J. Morgan}
+\affiliation{Department of Chemistry, University of Bath, Claverton Down, Bath, BA2 7AY}
+
+\date{\today}
+
+% \begin{abstract}
+
+% \end{abstract}
+
+\maketitle
+
+Taking a microscopic perspective, a particle undergoing a sequence of hops or jumps between lattice sites, after $m$ jumps has a displacement of
+\begin{equation}
+  \vec{r}_v = \vec{a}_1 + \vec{a}_2 + \vec{a}_3 + \ldots + \vec{a}_m
+\end{equation}
+and a mean-squared displacement of
+\begin{equation}
+  \left< \left|\vec{r}_v\right|^2 \right> = \sum_i^m\sum_j^m\left<\vec{a}_i \cdot \vec{a}_j\right>,
+  \label{eqn:msd}
+\end{equation}
+\begin{equation}
+  \left< \left| r_v \right|^2 \right > = m\!\left|a\right|^2 + 2\sum_{i}^m\sum_{j>i}^m\left<\vec{a}_i\cdot \vec{a}_j\right>,
+\end{equation}
+where the angle brackets denote an ensemble average.
+
+The microscopic (tracer) diffusion coefficient is given by the Einstein relation via
+\begin{equation}
+  D^* = \lim_{t\to\infty}\frac{\left< \left|r_v\right|^2 \right>}{6t_m},
+\end{equation}
+where $t_m$ is the time taken for $m$ hops.
+
+If the particle hops are \emph{random}, the hop vectors $\left\{\vec{a}_i\right\}$ are independent, and $\sum_i^m\sum_{j>i}^m\left<\vec{a}_i\cdot \vec{a}_j\right>=0$ in the limit $m\to\infty$. These particle hops are \emph{uncorrelated}, and $D^*$ has a simple dependency on hopping rate:
+\begin{equation}
+  D^*_\mathrm{rw}=\lim_{t\to\infty}\frac{ma^2}{6t_m}.
+\end{equation}
+
+In many cases, however, however, successive hops of the same particle are \emph{correlated} and the diffusion coefficient differs from the random walk value by
+\begin{equation}
+  D^* = f D^*_\mathrm{rw}
+\end{equation}
+where
+\begin{equation}
+  f = 1 + \frac{2\displaystyle\sum_{i=1}^{m-1}\sum_{j>i}^{m}\left<\vec{a}_i \cdot \vec{a}_j\right>}{m\left|a\right|^2}.
+\end{equation}
+
+In contrast to the microscopic (tracer) diffusion coefficient, which is a property of the motion of individal ions, the ionic conductivity is an ensemble property of all the ions in the system. The dc ionic conductivity is proportional to the rate of net mean-squared displacement of charge. For a single charge-carrying ionic species (all $q_i=q$) the net ionic displacement in time $t_m$ is
+\begin{equation}
+  \vec{r}_A = \sum_\alpha\sum_i\vec{a}_i^\alpha,
+\end{equation}
+where $\vec{a}_i^\alpha$ is hop $i$ of ion $\alpha$, with a mean-squared displacement 
+\begin{equation}
+  \left< \left|\vec{r}_A\right|^2 \right> = \sum_{i,j}\left< \vec{a}_i^\alpha \cdot \vec{a}_j^\alpha \right> + \sum_{i,j;\alpha\neq\beta}\left< \vec{a}_i^\alpha \cdot \vec{a}_j^\beta \right>.
+\end{equation}
+(From Allnatt \cite{Allnatt_JPhysC1982}), this is related to the phenomenological coefficient, $L_{AA}$, via
+\begin{equation}
+  L_{AA} = \frac{\left<\left|\vec{r}_A\right|\right>}{6VkTt}
+\end{equation}
+where $L_{AA}$ is defined in the Onsager flux equation
+\begin{equation}
+  J_A = L_{AA}X_A
+\end{equation}
+with $J_A$ the flux of species A, and $X_A$ the driving force.
+
+If the driving force is an electric field, $E$:
+\begin{equation}
+  J_A = L_{AA}q_A E
+\end{equation}
+Comparing this to Ohm's law, where $J_C$ is the charge flux (current density):
+\begin{equation}
+  J_C = \sigma E = q_A J_A = L_{AA} q_A^2 E
+\end{equation}
+\begin{equation}
+  \sigma = L_{AA}q_A^2 = \frac{q_A^2\left<\left|\vec{r}_A\right|^2\right>}{6VkTt}
+\end{equation}
+By applying the classical Nernst-Einstein equation, 
+\begin{equation}
+  \frac{\sigma}{D} = \frac{Nq^2}{VkT},
+\end{equation}
+$\sigma$ can be converted to an effective diffusion coefficient,
+\begin{equation}
+  D_\sigma = \frac{\left<\left|\vec{r}_A\right|^2\right>}{N6t}.
+\end{equation}
+
+
+
+
+$D_\sigma$ can also be compared to the random-walk diffusion coefficient:
+\begin{equation}
+  D_\sigma = f_I D^r
+\end{equation}
+where,
+\begin{equation}
+  f_I = 1 + \frac{
+    2\displaystyle\sum_{i=1}^{m-1}\sum_{j=i+1}^{m}\left<a_i^\alpha \cdot a_j^\beta\right>
+  }{
+    Nma^2
+  }
+\end{equation}
+\begin{equation}
+  f_I = f + \frac{
+    2\displaystyle\sum_{i<j;\alpha\neq\beta}\left<a_i^\alpha \cdot a_j^\beta\right>
+  }{
+    Nma^2
+  }
+\end{equation}
+($N$ is the total number of mobile ions).
+The ratio of the tracer diffusion coefficient, $D^*$, to the effective ionic conductivity diffusion coefficient, $D_\sigma$, defines the Haven ratio, $H_R$:
+\begin{equation}
+  H_R = \frac{D^*}{D_\sigma} = \frac{f}{f_I}
+\end{equation}
+\todo{relationship to Nernst-Einstein relation}:
+\begin{equation}
+   \frac{\sigma}{D^*} = \frac{Cq^2}{kTH_R}.
+ \end{equation}
+ (alternatively, expressed using $f_{NE}=1/H_R$) 
+ If $H_R=1$ this gives the Nernst-Einstein expression $\to$ classical Nernst-Einstein behaviour:
+ \begin{equation}
+   \frac{\sigma}{D^*} = \frac{Cq^2}{kT}.
+ \end{equation}
+
+\bibliography{Bibliography}
+\end{document}
+  

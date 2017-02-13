@@ -1,0 +1,72 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: LLZO_lattice_gas_MC.aux
+The style file: apsrev4-1.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: LLZO_lattice_gas_MCNotes.bib
+Database file #2: Bibliography.bib
+Warning--entry type for "lattice_mc_module" isn't style-file defined
+--line 19 of file Bibliography.bib
+control{REVTEX41Control}, control.key{N/A}, control.author{N/A}, control.editor{N/A}, control.title{N/A}, control.pages{N/A}, control.year{N/A}, control.eprint{N/A}, 
+control{apsrev41Control}, control.key{N/A}, control.author{08}, control.editor{1}, control.title{}, control.pages{0}, control.year{1}, control.eprint{N/A}, 
+Warning--jnrlst (dependency: not reversed) set 1
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+merlin.mbs apsrev4-1.bst 2010-07-25 4.21a (PWD, AO, DPC) hacked
+Control: key (0) 
+Control: author (8) initials jnrlst
+Control: editor formatted (1) identically to author
+Control: production of article title (-1) disabled
+Control: page (0) single
+Control: year (1) truncated
+Control: production of eprint (0) enabled
+Warning--empty year in Burbano_Garnets_InPreparation
+Warning--empty year in lattice_mc_module
+Warning--missing publisher in VanderVenAndCeder_HandbookofMaterialsModelling2010
+You've used 61 entries,
+            5847 wiz_defined-function locations,
+            1959 strings with 29853 characters,
+and the built_in function-call counts, 58828 in all, are:
+= -- 3556
+> -- 1732
+< -- 415
++ -- 559
+- -- 441
+* -- 9339
+:= -- 5664
+add.period$ -- 61
+call.type$ -- 61
+change.case$ -- 244
+chr.to.int$ -- 67
+cite$ -- 64
+duplicate$ -- 5470
+empty$ -- 4304
+format.name$ -- 1012
+if$ -- 11680
+int.to.chr$ -- 3
+int.to.str$ -- 68
+missing$ -- 700
+newline$ -- 229
+num.names$ -- 163
+pop$ -- 2339
+preamble$ -- 1
+purify$ -- 288
+quote$ -- 0
+skip$ -- 2034
+stack$ -- 0
+substring$ -- 1373
+swap$ -- 5212
+text.length$ -- 212
+text.prefix$ -- 0
+top$ -- 10
+type$ -- 869
+warning$ -- 4
+while$ -- 164
+width$ -- 0
+write$ -- 490
+(There were 5 warnings)
