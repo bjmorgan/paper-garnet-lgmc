@@ -11,6 +11,7 @@
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\xLi}{x_\m{Li}}
 \newcommand{\hrpa}{{\widetilde{\nu}}}
+\newcommand{\angstrom}{\mbox{\normalfont\AA}}
 
 \include{user_commands}
 \include{amsmath}
@@ -24,31 +25,23 @@
 \date{\today}
 
 \begin{abstract}
-In many solid electrolytes, ion transport can be approximated as a sequence of hops between distinct lattice sites. Assuming these hops are uncorrelated allows quantitative relationships to be derived between microscopic hopping rates and macroscopic transport coefficients; tracer diffusion coefficients and ionic conductivities. In real materials, the assumption of uncorrelated hops is exact only in the dilute limit, where interactions between mobile ions can be neglected. At non-dilute concentrations interactions between mobile particles become significant, and ion hops become correlated. This causes the relationships between hopping frequency, diffusion coefficent, and ionic conductivity to deviate from the random walk expressions, where this effect is quantified by correlation factors, $f$ and $f_\m{I}$. These correlation factors differ between materials, and depend on the concentration of mobile particles, the nature of the interactions, and the geometry of the host lattice. 
-Here we quantify these correlation effects for the ``garnet'' lattice using lattice-gas Monte Carlo simulations. Lithium garnets are a family of promising lithium-ion solid electrolytes The garnet lattice corresponds to the lithium-diffusion network in lithium-garnet family of  solid--lithium-ion electrolytes. We have used lattice-gas Monte Carlo simulations to directly calculate $f$ and $f_\m{I}$ for this lattice geometry. Start with non-interacting particles (volume exclusion only): find that single-particle correlation effects are more significant in the garnet lattice than for any other 3D solid electrolyte lattice. Attributed to the unusual lattice geometry (mixture of 4-coordinate and 2-coordinate sites $\to$ gives behaviour intermediate between 3D and 1D). Then consider the effects of interactions: nearest-neighbour repulsion, and on-site energies. More complex variation in $f$. Causes $f_\m{I}<1$. Strong correlation at $x=3$ (site asymmetry) and $x=6$ (nearest-neighbour repulsion). Both correspond to ordering of the mobile particles over the lattice. 
-
-Finally consider the question of (in the Li garnets) what should the Li stoichiometry be to maximise the ionic conductivity: answer $\to$ strong variations depending on the precise interaction type and strength.
-
+In many solid electrolytes, ion transport can be approximated as a sequence of hops between distinct lattice sites. Assuming these hops are uncorrelated allows quantitative relationships to be derived between microscopic hopping rates and macroscopic transport coefficients; tracer diffusion coefficients and ionic conductivities. In real materials, the assumption of uncorrelated hops is exact only in the dilute limit, where interactions between mobile ions can be neglected. At non-dilute concentrations these interactions can be significant, and ion hops become correlated. This causes the relationships between hopping frequency, diffusion coefficent, and ionic conductivity to deviate from the random walk expressions, with this effect quantified by single-particle and collective correlation factors, $f$ and $f_\m{I}$. These parameters differ between materials, and depend on the concentration of mobile particles, the nature of the interactions, and the host lattice geometry. 
+Here we study these correlation effects for the garnet lattice using lattice-gas Monte Carlo simulations. This lattice describes diffusion pathways in lithium-garnets---a family of promising solid lithium-ion electrolytes---and has an unusual geometry containing both 4-coordinate and 2-coordinate sites. We find that for non-interacting particles (volume exclusion only) single-particle correlation effects are more significant than for any other 3D solid electrolyte lattice. This is attributed to the presence of 2-coordinate lattice sites, which gives correlation effects intermediate between typical 3D and 1D lattices. Including nearest-neighbour repulsion and on-site energy differences gives more complex single-particle correlation behaviour and introduces collective correlation effects. In particular, we find strong correlation effects at $x(\mathrm{Li})=3$ (site energies) and $x(\mathrm{Li})=6$ (nearest-neighbour repulsion). Both effects correspond to ordering of the mobile particles over the lattice. Finally we consider the question of how mobile ion stoichiometry can be tuned to maximise the ionic conductivity. We find the optimal stoichiometry is highly sensitive to the choice of interaction parameters.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
 
-The ability of solid electrolytes to conduct electric charge through the transport of mobile ions makes them key components in devices such as fuel cells and solid-state lithium-ion batteries \cite{BachmanEtAl_ChemRev2016, ManthiramEtAl_NatRevMater2017,GoodenoughAndSingh_JElectrochemSoc2015, MalavasiEtAl_ChemSocRev2010}. The utility of a particular solid electrolyte depends its ionic conductivity. This quantifies how effectively mobile ions transport charge, and depends on a number of factors, including crystal structure, the identity of the component atoms, and the concentrations of mobile ions. >> HERE something about understanding (and quantifying?) how these different factors affect ionic conductivities is key to developing high ionic conducivity solid electrolytes for use in high performance electrochemical devices.
+The ability of solid electrolytes to conduct electric charge by transporting  ions is central to their use in devices such as fuel cells and solid-state lithium-ion batteries.\cite{BachmanEtAl_ChemRev2016, ManthiramEtAl_NatRevMater2017,GoodenoughAndSingh_JElectrochemSoc2015, MalavasiEtAl_ChemSocRev2010} In both cases, solid electrolytes with high ionic conductivities are desirable. In fuel cells high conductivities allow lower operating temperatures, reducing running costs and increasing operating lifetimes. In solid-state batteries high conductivities allow faster charging rates and higher power output. Ionic conductivities depend on a number of factors, including the crystal structure, the chemical composition, and the concentration of mobile ions.\cite{VanDerVenEtAl_AccChemRes2013} Developing a quantitative understanding of these factors is key to developing high ionic conductivity solid electrolytes for use in high performance electrochemical devices.
 
-Solid electrolytes can be conceptually regarded as comprising two distinct sets of ions: those that are ``mobile'' and can travel multiple lattice spacings over experimentally relevant timescales, and those that are ``fixed'' and vibrate about their crystallographic sites. 
-The set of fixed ions defines a three-dimensional network of diffusion pathways through which the mobile ions diffuse. 
-The geometry of these diffusion paths is defined by the crystal structure, and represents one of the important differences between families of structurally-related solid electrolytes.
+Solid electrolytes can be considered to comprise two distinct sets of ions: ``fixed'' ions that vibrate about their crystallographic sites, and ``mobile'' ions that diffuse through the system and contribute to ionic conductivity. The fixed ion positions define a network of diffusion pathways through which the mobile ions can move. Families of solid electrolytes with common crystal structures therefore have topologically equivalent diffusion networks, while electrolytes with different crystal structures will have topologically distinct diffusion paths. While much research into solid electrolytes focusses on understanding differences in ionic conductivities within specific structural families, a complementary question considers how differences in crystal structure, and hence diffusion network topology, affect ionic transport.
 
-Developing high-conductivity solid electrolytes requires understanding how stoichiometry and structure affect ion transport. 
-At a macroscopic scale, mass and charge transport are characterised by diffusion coefficients and ionic conductivities, respectively. 
-These transport coefficients describe the long-time behaviour of ions, and represent ensemble averages over all microscopic diffusion processes undergone by individual mobile ions. 
-A quantitative understanding of ionic conductivity across different solid electrolytes depends on the resolving the relationship between these microscopic diffusion processes and macroscopic transport coefficients.  
+Crystal structure can be considered a microscopic characteristic, dictating the positions of individual atoms. Ionic transport at scales relevant to device performance, however, is described by macroscopic transport coefficients: diffusion coefficients and ionic conductivities. These describe long-time behaviours, and represent ensemble averages over all microscopic diffusion processes. A meaningful understanding of differences in ionic conductivity between solid electrolytes therefore depends on the quantitative relationships between microscropic diffusion and macroscopic ion transport.
 
-In many solid electrolytes the microscopic transport of ions can be considered a sequence of discrete ``hops'', where ions move between well-defined lattice sites.\cite{[{Describing ionic transport as sequences of discrete hops breaks down for ``super-ionic'' solid electrolytes, with extremely mobile ions. 
-The set of criteria for considering ionic transport to operate in a particle hopping regime are discussed by Catlow in }]  [{}] Catlow_SolidStateIonics1983} If these hops are independent, every ion follows a random walk. 
-The tracer diffusion coefficient, $D^*$ and d.c.\ ionic conductivity, $\sigma$, can then be expressed as functions of the average hop rate per atom, $\hrpa$,\footnote{The average hop rate per atom is the inverse of the mean residence time, $\hrpa=1/{\widetilde\tau}$. 
+In many solid electrolytes, the microscopic transport of ions can be approximated as a sequence of discrete ``hops'' between distinct lattice sites.\cite{[{Describing ionic transport as sequences of discrete hops breaks down for ``super-ionic'' solid electrolytes, with extremely mobile ions. 
+The set of criteria for considering ionic transport to operate in a particle hopping regime are discussed by Catlow in }]  [{}] Catlow_SolidStateIonics1983} If these hops are \emph{independent}, every ion follows a random walk. 
+The tracer diffusion coefficient, $D^*$, and ionic conductivity, $\sigma$, can then be expressed in terms of the average hop-rate per atom, $\hrpa$,\footnote{The average hop rate per atom is the inverse of the mean residence time, $\hrpa=1/{\widetilde\tau}$. 
 The contribution from each atom is a sum over individual hop rates, $\Gamma_i$, and is therefore related to the ``total rate'' of the kMC method via $\hrpa=\left<Q\right>/N$.\cite{Mehrer_DiffusionBook}} 
 via \cite{HowardAndLidiard_RepProgPhys1964,Stoneham_IonicSolidsAtHighTemperatures}
 \begin{equation}
@@ -59,35 +52,35 @@ via \cite{HowardAndLidiard_RepProgPhys1964,Stoneham_IonicSolidsAtHighTemperature
   \sigma = \frac{Cq^2}{kT}\frac{1}{6}a^2\hrpa;
   \label{eqn:random_walk_conductivity}
 \end{equation}
-where $a$ is a characteristic hop distance, $C$ is the charge carrier concentration, and $q$ is the charge of the mobile ions. 
-Combining equations \ref{eqn:random_walk_diffusion} and \ref{eqn:random_walk_conductivity} produces the ``Nernst-Einstein relation'' between $D^*$ and $\sigma$:
+where $a$ is the characteristic hop distance, $C$ is the mobile ion concentration, and $q$ is the charge of the mobile ions. 
+Equations \ref{eqn:random_walk_diffusion} and \ref{eqn:random_walk_conductivity} can be combined to give the ``Nernst-Einstein relation'', which connects $D^*$ and $\sigma$:
 \begin{equation}
   \frac{\sigma}{D^*} = \frac{Cq^2}{kT}.
   \label{eqn:random_walk_nernst_einstein}
 \end{equation}
-These three equations provide quantitative relationships between the hop-rate, $\hrpa$, tracer diffusion coefficient, $D^*$, and ionic conductivity, $\sigma$. 
-Their derivation, however, depends on all hops being independent---an assumption that holds only in the limit of very low carrier concentrations, or when the mobile ions are completely non-interacting.\cite{Murch_SolStatIonics1982}
+These three equations describe quantitative relationships between the hop-rate, $\hrpa$, tracer diffusion coefficient, $D^*$, and ionic conductivity, $\sigma$. 
+Their derivation, however, depends on the assumption that all hops are independent, which holds only in the limit of very low carrier concentrations, or for fully non-interacting mobile ions.\cite{Murch_SolStatIonics1982}
 
 Practical solid electrolytes typically have high carrier concentrations, and interparticle interactions can be significant. 
 In these cases, individual hop probabilities depend on the specific arrangement of nearby ions, and hops are no longer statistically independent. 
-Instead, ion trajectories are ``correlated'', and deviate from the random walk behaviour of non-interacting systems.\cite{BardeenAndHerring_Imperfections1952, CompaanAndHaven_TransFaradaySoc1958, AllnattAndLidiard_AtomicTransportInSolids,HowardAndLidiard_RepProgPhys1964} Correlations between hops made by individual ions affect the relationship between average hop rate, $\hrpa$, and tracer diffusion coefficient, $D^*$, which becomes
+Instead, ion trajectories are \emph{correlated}, and deviate from the random walk behaviour of non-interacting systems.\cite{BardeenAndHerring_Imperfections1952, CompaanAndHaven_TransFaradaySoc1958, AllnattAndLidiard_AtomicTransportInSolids,HowardAndLidiard_RepProgPhys1964} Correlations between hops made by individual ions modify the relationship between average hop rate, $\hrpa$, and tracer diffusion coefficient, $D^*$, which becomes
 \begin{equation}
   D^* = \frac{1}{6}a^2\hrpa f,
   \label{eqn:correlated_diffusion}
 \end{equation}
-where $f$ is a correlation factor that accounts for the deviations from random walk behaviour. 
-Correlations between hops made by \emph{different} ions affect the relationship between $\hrpa$ and $\sigma$, which becomes
+where $f$ is a single-particle correlation factor that accounts for the deviations from random walk behaviour. 
+Correlations between hops made by \emph{different} ions modify the relationship between $\hrpa$ and $\sigma$, which becomes
 \begin{equation}
   \sigma = \frac{Cq^2}{kT}\frac{1}{6}a^2\hrpa f_\m{I},
   \label{eqn:correlated_conductivity}
 \end{equation}
-where $f_\m{I}$ is the ``collective'' correlation factor. 
-The relationship between $\sigma$ and $D^*$ is now 
+where $f_\m{I}$ is a collective or ``physical'' correlation factor.\cite{Mehrer_DiffusionBook, Murch_SolStatIonics1982,SatoAndKikuchi_JChemPhys1971} 
+The relationship between $\sigma$ and $D^*$ now differs from Nernst-Einstein behaviour (Eqn.~\ref{eqn:random_walk_nernst_einstein}) by the ratio of these correlation factors:
 \begin{equation}
   \frac{\sigma}{D^*} = \frac{Cq^2}{kT}\frac{f_\m{I}}{f}.
   \label{eqn:correlated_nernst_einstein}
 \end{equation}
-which differs from Nernst-Einstein behaviour (Eqn.\ \ref{eqn:random_walk_nernst_einstein}) by the ratio of correlation factors $\frac{f_\m{I}}{f}$, commonly denoted as inverse of the Haven ratio, $H_\m{R}=\frac{f}{f_\m{I}}$.\cite{Murch_SolStatIonics1982,Akbar_JApplPhys1994}\todo{this is clumsy writing at the moment}
+The inverse ratio $\frac{f}{f_\mathrm{I}}$ is commonly denoted as the Haven ratio, $H_\m{R}$\cite{Murch_SolStatIonics1982,Akbar_JApplPhys1994}.
 
 Quantitative relationships between microscopic hopping rates and macroscopic transport coefficients can, in principle, be obtained by combining experimental data for $\hrpa$, $D^*$, and $\sigma$. 
 Ion hopping rates may be measured from NMR or muon spin-relaxation experiments,\cite{WilkeningEtAl_PhysRevLett2006, RuprechtEtAl_PhysChemChemPhys2012, Enciso-MaldonadoEtAl_ChemMater2015,Santibanez-MendietaEtAl_ChemMater2016, NozakiEtAl_SolStatIonics2014,AmoresEtAl_JMaterChemA2016} diffusion coefficients obtained from tracer diffusion experiments,\cite{BaylissEtAl_AdvEnergyMater2014} and ionic conductivities derived via impedence spectroscopy.\cite{ZeierEtAl_ACSApplMaterInt2014,Lopez-BermudezEtAl_2016} Computational methods provide an increasingly used alternative to direct experimental studies. 
@@ -96,51 +89,33 @@ All three parameters might not be known under equivalent experimental conditions
 Because the quantitative relationships between $\set{\hrpa,D^*,\sigma}$ depend on $f$ and $f_\m{I}$ (and their ratio $H_\m{R}$), it is important to know these correlation factors for the materials under consideration.
 
 For many simple crystal lattices the correlation parameters $\set{f, f_\m{I}, H_\m{R}}$ have been calculated.\cite{Friauf_JApplPhys1962,Murch_SolStatIonics1982} For more complex crystal structures, however, these parameters are unknown. 
-It is therefore common for studies to use the simplified Eqns.\ \ref{eqn:random_walk_diffusion}, \ref{eqn:random_walk_conductivity}, \ref{eqn:random_walk_nernst_einstein} to convert between $\set{\hrpa,D^*,\sigma}$.\note{incorrect ``modified'' NE equation in \cite{WangEtAl_JMaterChem2014,KlenkAndLai_PhysChemChemPhys2015}} This is equivalent to assuming non-interacting behaviour, where $f=1, f_\m{I}=1, H_\m{R}=1$ and can introduce quantitative errors for materials where correlations are significant.
+It is therefore common for studies to use the simplified Eqns.\ \ref{eqn:random_walk_diffusion}, \ref{eqn:random_walk_conductivity}, \ref{eqn:random_walk_nernst_einstein} to convert between $\set{\hrpa,D^*,\sigma}$. This is equivalent to assuming non-interacting behaviour, where $f=1, f_\m{I}=1, H_\m{R}=1$. For materials where correlations are significant, this can introduce quantitative errors.
 
-One example of technologically relevant solid electrolytes for which correlation effects are thought to be significant are the so-called lithium garnets. 
-These are a family of solid lithium-ion electrolytes with composition $\m{Li}_\m{x}M_3M^\prime_2\m{O}_{12}$,\cite{ThangaduraiEtAl_JAmCeramSoc2003, ThangaduraiEtAl_JPhysChemLett2015} which have attracted significant attention as candidates for all--solid-state lithium-ion batteries, due to their high lithium-ion conductivities and broad electrochemical stability windows.\cite{BachmanEtAl_ChemRev2016} 
-
-The garnet crystal structure provides an unusual three-dimensional network of lithium diffusion pathways, consisting of interlocking rings.\cite{AwakaEtAl_ChemLett2011} Each ring comprises 12 alternating tetrahedral and octahedral sites, with the tetrahedral sites acting as nodal points connecting adjacent rings (Fig.~\ref{fig:garnet_network_schematic}). 
+In this study, we focus on quantifying these relationships for garnet-structured solid electrolytes. The ``lithium-garnets'' are a family of solid lithium-ion electrolytes $\m{Li}_\m{x}M_3M^\prime_2\m{O}_{12}$,\cite{ThangaduraiEtAl_JAmCeramSoc2003, ThangaduraiEtAl_JPhysChemLett2015} that have attracted significant attention as candidates for all--solid-state lithium-ion batteries.\cite{BachmanEtAl_ChemRev2016,InadaEtAl_FrontEnergyRes2016} The garnet crystal structure has an unusual three-dimensional network of lithium diffusion pathways, consisting of interlocking rings.\cite{AwakaEtAl_ChemLett2011} Each ring comprises 12 alternating tetrahedral and octahedral sites, with the tetrahedral sites acting as nodal points connecting adjacent rings (Fig.~\ref{fig:garnet_network_schematic}). 
 Aliovalent substitution of the $M$ and $M^\prime$ cations allows the lithium stoichiometry to be tuned across a broad range. 
 A lithium stoichiometry of $\xLi=9$ corresponds to a fully occupied lithium-site lattice, and research has focussed on ``lithium stuffed'' garnets, typically with $\xLi=5\to7$. 
-Ionic conductivities vary enormously as a function of $\xLi$, with $\sigma$ increasing by $\sim10^9$ between \chem{Li_3Ln_3Te_2O_{12}} and \chem{Li_{6.55}La_3Zr_2O_{12}},\cite{ThangaduraiEtAl_JPhysChemLett2015, BachmanEtAl_ChemRev2016} and it remains an open question precisely how the lithium diffusion coefficient and ionic conductivity vary with lithium stoichiometry. 
-Resolving this is critical for the optimisation of ionic conducitivity for this family of materials.
+Ionic conductivities vary enormously as a function of $\xLi$, with $\sigma$ increasing by $\sim10^9$ between \chem{Li_3Ln_3Te_2O_{12}} and \chem{Li_{6.55}La_3Zr_2O_{12}},\cite{ThangaduraiEtAl_JPhysChemLett2015, BachmanEtAl_ChemRev2016} and it remains an open question precisely how the lithium diffusion coefficient and ionic conductivity vary with lithium stoichiometry. It is also not know to what extent the unusual diffusion pathway topology affects ionic transport. Resolving these questions is critical for the optimisation of ionic conductivity for this family of materials.
 
 \begin{figure}[tb]
   \centering
   \resizebox{8cm}{!}{\includegraphics*{garnet_network_schematic.pdf}} %
-    \caption{\label{fig:garnet_network_schematic}\todo{this needs redrawing (better colours + consistent alignments between polyhedra)}Schematic of the ring structures that constitute the garnet lithium-diffusion network. a) Each ring consists of 12 alternating tetrahedra (orange) and octahedra (blue). 
+    \caption{\label{fig:garnet_network_schematic}Schematic of the ring structures that constitute the garnet lithium-diffusion network. a) Each ring consists of 12 alternating tetrahedra (orange) and octahedra (blue). 
 Arrows show connections to neighbouring rings.\cite{AwakaEtAl_ChemLett2011} b) A 2D analogue of interconnected 8-membered rings of alternating ``tetrahedra'' and ``octahedra''.}
 \end{figure}
 
 Theoretical considerations and published data indicate that lithium distribution and transport in lithium garnets exhibit significant correlation effects. 
 The relationship between lithium stoichiometry and lithium transport coefficients is therefore expected to be non-ideal. 
-Low coordination numbers for the lithium lattice-sites: 4 for tetrahedra and 2 for octahedra; suggest significant site-blocking effects.\cite{AwakaEtAl_ChemLett2011} Short distances of $\sim2.4\u{\AA}$ between lithium sites suggest strong Li--Li Coulomb repulsion, becoming increasingly significant at high Li content.\cite{OCallaghanAndCussen_ChemComm2007,OCallaghanAndCussen_SolStatSci2008,Cussen_JMaterChem2010,WangEtAl_SolStatIonics2014} The presence of two non-equivalent sets of lattice sites is a further factor: if ideally distributed, lithium ions would occupy the octahedral and tetrahedral lattice sites in a 2:1 ratio at all Li concentrations. 
+Low coordination numbers for the lithium lattice-sites: 4 for tetrahedra and 2 for octahedra; suggest significant site-blocking effects.\cite{AwakaEtAl_ChemLett2011} Short distances of $\sim2.4\u{\angstrom}$ between lithium sites suggest strong Li--Li Coulomb repulsion, becoming increasingly significant at high Li content.\cite{OCallaghanAndCussen_ChemComm2007,OCallaghanAndCussen_SolStatSci2008,Cussen_JMaterChem2010,WangEtAl_SolStatIonics2014} The presence of two non-equivalent sets of lattice sites is a further factor: if ideally distributed, lithium ions would occupy the octahedral and tetrahedral lattice sites in a 2:1 ratio at all Li concentrations. 
 Neutron data however show that at low lithium content ($\xLi=3$) only tetrahedral sites are occupied,\cite{OCallaghanEtAl_ChemMater2006} while at higher lithium content ($\xLi=5\to7$) octahedral sites become preferentially occupied.\cite{Cussen_JMaterChem2010,ThangaduraiEtAl_JPhysChemLett2015} Experimental conductivities have also been found to show non-linear dependence on $\xLi$,\cite{ThompsonEtAl_AdvEnergyMater2015} and to deviate strongly from ideal values predicted (via Eqn.~\ref{eqn:random_walk_conductivity}) from muon-spin--spectroscopy hopping rates.\cite{NozakiEtAl_SolStatIonics2014} Further evidence for correlated transport in lithium garnets has been provided by computational studies. 
 Molecular dynamics simulations have been used to identify a variety of correlated diffusion processes,\cite{JalemEtAl_ChemMater2013, MeierEtAl_JPhysChemC2014,KlenkAndLai_PhysChemChemPhys2015, BurbanoEtAl_PhysRevLett2016} while calculated diffusion coefficients and ionic conductivities show non--Nernst-Einstein behaviour ($H_\m{R}<1$).\cite{KlenkAndLai_SolStatIonics2016, Burbano_Garnets_InPreparation} The quantitative effects of correlation in lithium garnets, however, are not known, and conversions between hop rates, diffusion coefficients, and ionic conductivities are often approximated by assuming uncorrelated motion.\cite{KuhnEtAl_PhysRevB2011,KuhnEtAl_JPhys-CondensMat2011,MiaraEtAl_ChemMater2013,Rustad_arXiv2016,GuEtAl_SolStatIonics2015,NozakiEtAl_SolStatIonics2014,ZeierEtAl_ACSApplMaterInt2014,JalemEtAl_ChemMater2013,AdamsAndRao_JMaterChem2012,DuvelEtAl_JPhysChemC2012,NarayananEtAl_RSCAdv2012,RamzyAndThangadurai_ACSApplMaterInt2010,AmoresEtAl_JMaterChemA2016}
 
 To quantitatively describe the relationship between lithium stoichiometry and ionic conductivity in lithium-ion garnets, it is essential to consider non-ideal distributions and transport of the lithium ions. 
-Here we present a computational analysis of these issues, using lattice-gas kinetic Monte Carlo simulations of diffusion on a ``garnet'' lattice, for a range of model Hamiltonians. 
-We calculate $f$ and $f_\m{I}$ as functions of carrier concentration (Li stoichiometry), first for a non-interacting\note{Need to be consistent with terminology. 
-Volume-exclusion is ``non-interacting'' in the sense that there are no interaction energies between particles to consider, which is equivalent to the system energy being equal for all accessible configurations of particles within the lattice} / volume-exclusion--only model, and then for models that include on-site single-particle energies and/or nearest-neighbour repulsion interactions. 
+Here we present a computational analysis of these issues, using lattice-gas kinetic Monte Carlo simulations of diffusion on a garnet lattice, for a range of model Hamiltonians. 
+We calculate $f$ and $f_\m{I}$ as functions of carrier concentration (Li stoichiometry), first for a non-interacting volume-exclusion model,\footnote{Here we follow the convention where ``non-interacting'' does not preclude volume-exclusion, where two mobile particles are forbidden from simultaneously occupying a single lattice site.\cite{Kutner_PhysLett1981} This definition is equivalent to all allowed configurations of particles having equal energies.} and then for models that include on-site single-particle energies and/or nearest-neighbour repulsion interactions. 
 In addition to self- and collective-correlation factors, we present site occupation populations, diffusion coefficients, and effective ionic conductivities for this range of simulation models, allowing us to discuss how different interactions contribute to non-ideal behaviour, and modify the relationships between particle hopping rate, diffusion coefficient, and ionic conductivity. 
 
-\todo{We find that $\ldots$ [do we want to include a brief summary of results here?]} \todo{edit / delete / revise the rest of this section $\to$}
+We find that for non-interacting particles (volume exclusion only) single-particle correlation effects are more significant than for any other 3D solid electrolyte lattice. This is attributed to the presence of 2-coordinate lattice sites, which gives correlation effects intermediate between typical 3D and 1D lattices. Including nearest-neighbour repulsion and on-site energy differences gives more complex single-particle correlation behaviour and introduces collective correlation effects. In particular, we find strong correlation effects at $x(\mathrm{Li})=3$ (site energies) and $x(\mathrm{Li})=6$ (nearest-neighbour repulsion). Both effects correspond to ordering of the mobile particles over the lattice. Finally we consider the question of how mobile ion stoichiometry can be tuned to maximise the ionic conductivity. We find the optimal stoichiometry is highly sensitive to the choice of interaction parameters.
 
-% This paper reports an exploration of these questions (issues?) via lattice-gas Monte Carlo simulations on a garnet lattice. 
-% Instead of attempting to precisely \note{previous modelling studies have considered ``realistic'' models via AIMD / atomistic potential modelling, but these obscure the relationships that may exist between simple conceptual system parameters (e.g.\ Li concentration, simple interactions such as Li––Li repulsion, and preference for Li to occupy tet vs.\ oct sites.). 
-% Computationally costly to a) perform calculations across full ranges of parameter space, b) even for single calculations, to obtain ionic conductivities sufficiently converged for accurate behaviour of $f_\m{I}$} simulate specific Li-garnet compositions, we have approached this by first quantifying the pure geometric effect for the ideal (cubic) garnet lattice, by calculating $f$ and $f_\m{I}$ (and hence $H_\m{R}$) for a volume-exclusion--only lattice gas model, across the complete range of $\xLi=0\to9$.
-
-% [Goal is to quantify the dynamical behaviour for (representative) simplified Hamiltonians. 
-% We hope that by considering these simplified models, we can build an understanding of the direct relationship between easily conceptualised parameters [examples] and the dynamical behaviour of the material, while still describing sufficient physics for these to show a broad correspondence to real Li-garnet materials.]
-
-% This represents the simplest model representation of correlated diffusion in a garnet lattice, and provides quantitative data for the pure geometric role of the lattice topology on $f$ and $f_\m{I}$.
-
-% We then consider the behaviour for more ``realistic'' Hamiltonians, with additional physics, expected to be significant in real materials, included. 
-% First, the effect of nearest-neighbour repulsion, and second the inequivalence of octahedral and tetrahedral sites. 
-% By running our lattice gas models in kinetic Monte Carlo simulations, across ranges of nearest-neighbour repulsion strengths and site energy differences, we may calculate not only the correlation factors, $f$ and $f_\m{I}$, but also kinetic and time-averaged configurational data: effective tracer diffusion coefficients and ionic conductivities, and site occupation statistics. 
-% Finally we identify the Li stoichiometries corresponding to maximal ionic conductivities, across our full parameter set.
 
 \section{Methods}
 
@@ -193,10 +168,10 @@ Simulations were performed for an ideal cubic $2\times2\times2$ garnet lattice, 
 The lattice site coordinates were generated from the cubic high-temperature \chem{Li_7La_3Zr_2O_{12}} (LLZO) structure (ICSD \#422259),\cite{AwakaEtAl_ChemLett2011} with the centres of octahedra and tetrahedra defined by the oxygen sub-lattice used to define the corresponding site coordinates. 
 In cubic LLZO, each lithium-octahedron contains a ``split'' pair of distorted $96h$ sites, separated by $0.81\u{\AA}$. 
 The construction used here considers each octahedron as a single ideal $48g$ site. 
-The network of diffusion pathways includes connections between nearest-neighbour sites only, i.e.\ all connections are between neighbouring tetrahedral--octahedral pairs. \note{calculated diffusion coefficients are presently in $\u{bohr}^2\u{s}^{-1}$.} For each simulation, $n_\m{Li}$ mobile ions are randomly distributed across the lattice sites. 1000 equilibration steps are performed before 10,000 production steps. 
+The network of diffusion pathways includes connections between nearest-neighbour sites only, i.e.\ all connections are between neighbouring tetrahedral--octahedral pairs. \note{calculated diffusion coefficients are presently in $\u{bohr}^2\u{s}^{-1}$.} For each simulation, $n_\m{Li}$ mobile ions are randomly distributed across the lattice sites. 1,000 equilibration steps are performed before 10,000 production steps. 
 
 For each set of model parameters, $\set{E_\m{nn}, \Delta E_\m{site}}$, simulations were performed across the full range of possible lithium stoichiometry ($\xLi=9$ corresponds to $n_\m{Li}=576$). 
-For each system, data were collected as an average over 5000 trajectories. 
+For each system, data were collected as an average over 5,000 trajectories. 
 
 \section{Results}
 \subsection{Non-Interacting Particles and Geometric Effects}
@@ -206,7 +181,7 @@ Fig.~\ref{fig:non-interacting_data} shows the calculated self- and collective-co
 \begin{figure*}[tb]
   \centering
   \resizebox{18.1cm}{!}{\includegraphics*{non-interacting_data.pdf}} %
-    \caption{\label{fig:non-interacting_data}Non-interacting particles on a garnet lattice: (a) The single-particle correlation factor, $f$, and collective correlation factor, $f_\m{I}$; (b) TODO, c) TODO, d) TODO.}
+    \caption{\label{fig:non-interacting_data}Non-interacting particles on a garnet lattice: (a) The single-particle correlation factor, $f$, and collective correlation factor, $f_\m{I}$; (b) Average octahedral and tetrahedral site occupations per forumla unit, $x_\m{oct}$ and $x_\m{tet}$ c) Tracer diffusion coefficient, $D^*$, and ``jump'' diffusion coefficient $D_\m{J}$. d) Effective ionic conductivity, $\sigma^\prime$.}
 \end{figure*}
 
 In the single particle limit, $\xLi\to0$, there are no blocking effects, and particles follow a random walk. 
@@ -232,7 +207,7 @@ This suggests that the extreme low value of $f_v$ for the garnet lattice is a co
         Body centred cubic\cite{CompaanAndHaven_TransFaradaySoc1956} & 8 & 0.72722 \\
         Simple cubic\cite{CompaanAndHaven_TransFaradaySoc1956} & 6 & 0.65311 \\
         Diamond\cite{CompaanAndHaven_TransFaradaySoc1956} & 4 & 0.5 \\
-        Garnet [This work] & [4+2] & 0.25 \\ 
+        Garnet [This work] & 4+2 & 0.25 \\ 
         1D chain\cite{Mehrer_DiffusionBook} & 2 & 0.0 \\ \hline
      \end{tabular}
    \caption{\label{tab:vacancy_correlation_factors}Vacancy correlation factors for some common crystal lattices. $z$ is the number of nearest neighbours for each site in the lattice.}
@@ -242,7 +217,7 @@ This suggests that the extreme low value of $f_v$ for the garnet lattice is a co
 For any non-interacting system, the hops made by different particles are unocorrelated, and $f_I=1$ for all $\xLi$, making $H_\m{R}=f$. 
 There are also no correlations between site occupations, and the mobile particles are randomly distributed over the available octahedral and tetrahedral sites, with a 2:1 population ratio that reflects the underlying lattice geometry.
 
-We also consider three measures of ionic transport in this system.\footnote{Because the lattice-gas model used here considers hops as barrierless, where hopping probabilities only depend on  energy differences between intial and final states, the effective transport coefficients calculated here cannot be directly compared to experimental values. 
+We also consider three measures of ionic transport in this system.\footnote{\todo{Note that $\hrpa$ is *not* the hopping prefactor used in these equations (there is a vacancy--coordination-number scaling)}Because the lattice-gas model used here considers hops as barrierless, where hopping probabilities only depend on  energy differences between intial and final states, the effective transport coefficients calculated here cannot be directly compared to experimental values. 
 Introducing fixed barrier heights for tet$\leftrightarrow$oct hops is equivalent to scaling the hopping prefactor $\hrpa$, which preserves \emph{relative} differences in the transport coefficients presented here. 
 A more realistic model would need to account for the influence of local site occupations on individual hopping barriers, see e.g.\ Ref.\ \cite{VanderVenAndCeder_HandbookofMaterialsModelling2010}, and would give quantitative deviations from the trends presented here.} Fig.~\ref{fig:non-interacting_data}(c) shows the tracer diffusion coefficient, $D^*$ (Eqn.~\ref{eqn:correlated_diffusion}) and the ``jump diffusion coefficient'', $D_\m{J}$\cite{VanDerVenEtAl_AccChemRes2013}, calculated as
 \begin{equation}
@@ -377,7 +352,7 @@ This fits with e.g.\ estimating model parameters from identifying those that rep
 \todo{Discuss: Kozinsky \emph{et al.} have  also proposed a fully ordered phase at $\xLi=6$, from a combined first-principles calculations and group theory analysis \cite{KozinskyEtAl_PhysRevLett2016}, with mixed octahedral and tetrahedral occupation.}
 
 \section{Supplementary Material}
-Supplementary material for this study is available as a GitHub repository \cite{garnet_LGMC_dataset_2017}. This repository contains (1) the complete data set used to support the findings of this study, (2) example scripts for running \texttt{lattice\_mc} simulations on a garnet lattice, and (3) a Jupyter {}notebook containing the code used to generate Figs.\ \ref{fig:non-interacting_data}--\ref{fig:conductivity_miniplots}.
+Supplementary material for this study is available as a GitHub repository \cite{garnet_LGMC_dataset_2017}. This repository contains (1) the complete data set used to support the findings of this study, (2) example scripts for running \texttt{lattice\_mc} simulations on a garnet lattice, and (3) a Jupyter {}notebook containing the code used to generate Figs.\ \ref{fig:non-interacting_data}--\ref{fig:conductivity_miniplots}. The \texttt{lattice\_mc} code is available under the MIT license \cite{Morgan_JOSS2017}.
 
 \section{Acknowledgements}
 B.\ J.\ M.\ acknowledges support from the Royal Society (UF130329). 
@@ -410,6 +385,8 @@ B.\ J.\ M. would also like to thank M.~Burbano and M.~Salanne for stimulating di
   \resizebox{15cm}{!}{\includegraphics*{conductivity_miniplots.pdf}} %
     \caption{\label{fig:conductivity_miniplots}CAPTION}
 \end{figure*}
+
+Note that Murch describes physical correlation effects as ``a manifestation of order. For example, an ion on a ``right'' position in an ordered structure which migrates to a ``wrong'' position will tend to reverse that jump''.\cite{Murch_SolStatIonics1982}
 
 \bibliography{Bibliography}
 \end{document}
