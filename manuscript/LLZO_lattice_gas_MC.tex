@@ -17,23 +17,25 @@
 
 \begin{document}
 
-\title{How Much Does Lattice Geometry Affect Ionic Transport in Garnet Solid Electrolytes?}
+\title{Lattice-Geometry Effects in Garnet Solid Electrolytes from Lattice-Gas Monte Carlo Simulations}
 \author{Benjamin J. Morgan}
 \affiliation{Department of Chemistry, University of Bath, Claverton Down, Bath, BA2 7AY}
 
 \date{\today}
 
 \begin{abstract}
-\todo{ABSTRACT}
+In many solid electrolytes, ion transport can be approximated as a sequence of hops between distinct lattice sites. Assuming these hops are uncorrelated allows quantitative relationships to be derived between microscopic hopping rates and macroscopic transport coefficients; tracer diffusion coefficients and ionic conductivities. In real materials, the assumption of uncorrelated hops is exact only in the dilute limit, where interactions between mobile ions can be neglected. At non-dilute concentrations interactions between mobile particles become significant, and ion hops become correlated. This causes the relationships between hopping frequency, diffusion coefficent, and ionic conductivity to deviate from the random walk expressions, where this effect is quantified by correlation factors, $f$ and $f_\m{I}$. These correlation factors differ between materials, and depend on the concentration of mobile particles, the nature of the interactions, and the geometry of the host lattice. 
+Here we quantify these correlation effects for the ``garnet'' lattice using lattice-gas Monte Carlo simulations. Lithium garnets are a family of promising lithium-ion solid electrolytes The garnet lattice corresponds to the lithium-diffusion network in lithium-garnet family of  solid--lithium-ion electrolytes. We have used lattice-gas Monte Carlo simulations to directly calculate $f$ and $f_\m{I}$ for this lattice geometry. Start with non-interacting particles (volume exclusion only): find that single-particle correlation effects are more significant in the garnet lattice than for any other 3D solid electrolyte lattice. Attributed to the unusual lattice geometry (mixture of 4-coordinate and 2-coordinate sites $\to$ gives behaviour intermediate between 3D and 1D). Then consider the effects of interactions: nearest-neighbour repulsion, and on-site energies. More complex variation in $f$. Causes $f_\m{I}<1$. Strong correlation at $x=3$ (site asymmetry) and $x=6$ (nearest-neighbour repulsion). Both correspond to ordering of the mobile particles over the lattice. 
+
+Finally consider the question of (in the Li garnets) what should the Li stoichiometry be to maximise the ionic conductivity: answer $\to$ strong variations depending on the precise interaction type and strength.
+
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
 
-Solid electrolytes are distinguished from other materials by their capacity for ionic transport in the solid state.
-This property makes them useful in technologies such as solid-oxide fuel cells and all--solid-state lithium-ion batteries.
-In both cases, a solid electrolyte's utility critically depends its ionic conductivity, which quantifies the capacity for ion mobility to effect charge transport.
+The ability of solid electrolytes to conduct electric charge through the transport of mobile ions makes them key components in devices such as fuel cells and solid-state lithium-ion batteries \cite{BachmanEtAl_ChemRev2016, ManthiramEtAl_NatRevMater2017,GoodenoughAndSingh_JElectrochemSoc2015, MalavasiEtAl_ChemSocRev2010}. The utility of a particular solid electrolyte depends its ionic conductivity. This quantifies how effectively mobile ions transport charge, and depends on a number of factors, including crystal structure, the identity of the component atoms, and the concentrations of mobile ions. >> HERE something about understanding (and quantifying?) how these different factors affect ionic conductivities is key to developing high ionic conducivity solid electrolytes for use in high performance electrochemical devices.
 
 Solid electrolytes can be conceptually regarded as comprising two distinct sets of ions: those that are ``mobile'' and can travel multiple lattice spacings over experimentally relevant timescales, and those that are ``fixed'' and vibrate about their crystallographic sites. 
 The set of fixed ions defines a three-dimensional network of diffusion pathways through which the mobile ions diffuse. 
@@ -108,7 +110,7 @@ Resolving this is critical for the optimisation of ionic conducitivity for this 
 \begin{figure}[tb]
   \centering
   \resizebox{8cm}{!}{\includegraphics*{garnet_network_schematic.pdf}} %
-    \caption{\label{fig:garnet_network_schematic}Schematic of the ring structures that constitute the garnet lithium-diffusion network. a) Each ring consists of 12 alternating tetrahedra (orange) and octahedra (blue). 
+    \caption{\label{fig:garnet_network_schematic}\todo{this needs redrawing (better colours + consistent alignments between polyhedra)}Schematic of the ring structures that constitute the garnet lithium-diffusion network. a) Each ring consists of 12 alternating tetrahedra (orange) and octahedra (blue). 
 Arrows show connections to neighbouring rings.\cite{AwakaEtAl_ChemLett2011} b) A 2D analogue of interconnected 8-membered rings of alternating ``tetrahedra'' and ``octahedra''.}
 \end{figure}
 
@@ -181,12 +183,12 @@ where $\left<R^2\right>$ is the mean-squared displacement of the mobile ions, an
 where $\sum_i R_i$ is the \emph{net} displacement of all mobile particles. 
 In both cases the denominators correspond to the limiting behaviour for uncorrelated diffusion.
 
-To allow time-dependent properties to be evaluated, we perform our lattice-gas Monte Carlo simulations within a rejection-free kinetic Monte Carlo scheme. 
+To allow time-dependent properties to be evaluated, we perform our lattice-gas Monte Carlo simulations within a rejection-free kinetic Monte Carlo scheme \cite{Voter_RadiationEffectsInSolids2007}. 
 For each simulation step, $k$, the set of hop probabilities, $\set{P_{i,k}}$, are converted to rates, $\set{\Gamma_{i,k}}$ by scaling by a common prefactor of $10^{13}\u{s}^{-1}$. 
 After selecting a hop, the simulation time is updated by $\Delta t = Q_k^{-1}\ln\left(1/u\right)$, where $Q_k$ is the ``total rate''; $Q_k=\sum_i \Gamma_{i,k}$, and $u$ is a uniform random number $u\in\left(0,1\right]$. 
 This approach provides time-averaged site occupations, and directly calculated diffusion coefficients and ionic conductivities.
 
-Our lattice-gas kinetic Monte Carlo simulations were performed using the \texttt{lattice\_mc} code.\cite{lattice_mc_module}. 
+Our lattice-gas kinetic Monte Carlo simulations were performed using the \texttt{lattice\_mc} code.\cite{Morgan_JOSS2017} 
 Simulations were performed for an ideal cubic $2\times2\times2$ garnet lattice, with 384 octahedral sites and 192 tetrahedral sites. 
 The lattice site coordinates were generated from the cubic high-temperature \chem{Li_7La_3Zr_2O_{12}} (LLZO) structure (ICSD \#422259),\cite{AwakaEtAl_ChemLett2011} with the centres of octahedra and tetrahedra defined by the oxygen sub-lattice used to define the corresponding site coordinates. 
 In cubic LLZO, each lithium-octahedron contains a ``split'' pair of distorted $96h$ sites, separated by $0.81\u{\AA}$. 
@@ -196,18 +198,16 @@ The network of diffusion pathways includes connections between nearest-neighbour
 For each set of model parameters, $\set{E_\m{nn}, \Delta E_\m{site}}$, simulations were performed across the full range of possible lithium stoichiometry ($\xLi=9$ corresponds to $n_\m{Li}=576$). 
 For each system, data were collected as an average over 5000 trajectories. 
 
-\todo{ Minimal documentation for this code. Push to github + documentation + docstrings + doi}
-
 \section{Results}
 \subsection{Non-Interacting Particles and Geometric Effects}
 We first examine the pure geometric effect of the garnet lattice by modelling non-interacting systems, for which deviations from random walk behaviour emerge purely from volume exclusion effects. 
 Fig.~\ref{fig:non-interacting_data} shows the calculated self- and collective-correlation factors, $f$ and $f_\m{I}$, average tetrahedral and octahedral site occupations, $n_\m{tet}$ and $n_\m{oct}$, tracer and ``jump'' diffusion coefficients, $D^*$ and $D_\m{J}$, and effective (reduced) ionic conductivity, $\sigma^\prime$, for the volume-exclusion--only simulations, as a function of $\xLi$.
 
-\begin{figure}[tb]
+\begin{figure*}[tb]
   \centering
-  \resizebox{5cm}{!}{\includegraphics*{non-interacting_data.pdf}} %
-    \caption{\label{fig:non-interacting_data}CAPTION a) TODO, b) TODO, c) TODO, d) TODO.}
-\end{figure}
+  \resizebox{18.1cm}{!}{\includegraphics*{non-interacting_data.pdf}} %
+    \caption{\label{fig:non-interacting_data}Non-interacting particles on a garnet lattice: (a) The single-particle correlation factor, $f$, and collective correlation factor, $f_\m{I}$; (b) TODO, c) TODO, d) TODO.}
+\end{figure*}
 
 In the single particle limit, $\xLi\to0$, there are no blocking effects, and particles follow a random walk. 
 With increasing concentration of mobile ions, however, single particle diffusion increasingly deviates from random walk behaviour. 
@@ -219,7 +219,7 @@ Table \ref{tab:vacancy_correlation_factors} presents $f_v$ values previously cal
 For the garnet lattice, $f_v=0.25$. 
 This is smaller than for all of the other 3D lattices, by at least a factor of 2, corresponding to unusually strong correlation effects. 
 This result can be understood as a consequence of the particular garnet lattice geometry. 
-For a general set of 3D lattiecs, as the number of nearest neighbours of each lattice site, $z$, decreases, $f_v$ also decreases, and correlation effects become more significant. 
+For a general set of 3D lattices, as the number of nearest neighbours of each lattice site, $z$, decreases, $f_v$ also decreases, and correlation effects become more significant. 
 The garnet lattice has both 4-coordinate (tetrahedral) and 2-coordinate (octahedral) sites, and long ranged diffusion follows an alternating T$\to$O$\to$T$\to$O pattern. 
 The calculated value of $f_v=0.25$ is halfway between the values for the 4-coordinate diamond lattice ($f_v=0.5$) and for a 1-D chain, where every site is 2-coordinate ($f_v=0$). 
 This suggests that the extreme low value of $f_v$ for the garnet lattice is a consequence of the low coordination of the lattice sites, in particular the local 1D coordination at the octahedral sites, which act as bottlenecks for long-ranged diffusion. 
@@ -257,7 +257,7 @@ The tracer diffusion coefficient, however, shows the effect of correlations betw
 %   \Theta = \cfrac{\partial\left(\cfrac{\mu}{kT}\right)}{\partial \ln x}.
 % \end{equation}}
 The ionic conductivity of a system depends on both the charge-carrier concentration, and the ionic mobility (which is proportional to $D_J$). 
-To examine the relationship between carrier concentration and \emph{relative} ionic conductivities, we also con consider a ``reduced'' conductivity, $\sigma^\prime$,\footnote{For a system with a single mobile species, the reduced conductivity is equal to the true ionic conductivity if $\frac{VkT}{q^2}=1$.} given by
+To examine the relationship between carrier concentration and \emph{relative} ionic conductivities, we also con consider a ``reduced'' conductivity, $\sigma^\prime$,\footnote{For a system with a single mobile species, the reduced conductivity is equal to the true ionic conductivity if $(VkT)/(q^2)=1$.} given by
 \begin{equation}
   \sigma^\prime = xD_\m{J}.
 \end{equation}
@@ -293,16 +293,16 @@ This effect is strongest at two-thirds site occupation ($\xLi=6$) where the octa
 In this fully ordered system, correlation effects are maximised: any O$\to$T hop by a single particle is likely to be quickly reversed, and diffusion is possible only for highly correlated collective movement by groups of particles \cite{BurbanoEtAl_PhysRevLett2016}. 
 This effect is visible in the effective conductivity, $\sigma^\prime$, which drops sharply at $\xLi=6$.
 
-\note{Kozinsky \etal have also proposed a fully ordered phase at $\xLi=6$, from first-principles calculatinos and group theory analysis, that differs from the pure octahedral occupation described here \cite{KozinskyEtAl_PhysRevLett2016}. 
+\note{Kozinsky \etal have also proposed a fully ordered phase at $\xLi=6$, from first-principles calculations and group theory analysis, that differs from the pure octahedral occupation described here \cite{KozinskyEtAl_PhysRevLett2016}. 
 The fully-ordered configuration observed here at $\xLi=6$ is different from that proposed by Kozinsky \etal \cite{KozinskyEtAl_PhysRevLett2016} . 
 That work predicted mixed occupation of octahedral and tetrahedral sites. 
 In that case connected to symmetry breaking / in this case the cubic lattice symmetry is maintained}
 
-\begin{figure}[tb]
+\begin{figure*}[tb]
   \centering
-  \resizebox{8cm}{!}{\includegraphics*{nearest_neighbour_sketch_alt_layout.pdf}} %
-    \caption{\label{fig:nearest_neighbour_sketch_alt_layout}CAPTION}
-\end{figure}
+  \resizebox{14cm}{!}{\includegraphics*{nearest_neighbour_data.pdf}} %
+    \caption{\label{fig:nearest_neighbour_data}The effect of nearest-neighbour repulsion between mobile particles on a garnet lattice: (a) single-particle correlation factor, $f$; (b) collective correlation factor, $f_\m{I}$; (c) Haven ratio, $H_\m{R}$; (d) average octahedra occupation, $x_\m{oct}$; (e) average tetrahedra occupation, $x_\m{tet}$; (f) effective ionic conductivity, $\sigma^\prime$. $E_\m{nn}$ is in multiples of $kT$.}
+\end{figure*}
 
 \subsubsection{Site asymmetry}
 The non-interacting model, discussed above, assumes that mobile Li ions show an equal preference for octahedral and tetrahedral sites: the site ``type'' is only relevant in that it defines the connectivity  of each site within the lattice graph. 
@@ -314,8 +314,8 @@ In the following the describe LGMC simulations for otherwise non-interacting par
 
 \begin{figure*}[tb]
   \centering
-  \resizebox{13cm}{!}{\includegraphics*{site_assymetry_sketch.pdf}} %
-    \caption{\label{fig:site_assymetry_sketch}CAPTION}
+  \resizebox{14cm}{!}{\includegraphics*{site_energies_data.pdf}} %
+    \caption{\label{fig:site_energies_data}The effect of unequal site occupation energies for mobile particles on a garnet lattice: (a) single-particle correlation factor, $f$; (b) collective correlation factor, $f_\m{I}$; (c) Haven ratio, $H_\m{R}$; (d) average octahedra occupation, $x_\m{oct}$; (e) average tetrahedra occupation, $x_\m{tet}$; (f) effective ionic conductivity, $\sigma^\prime$. $\Delta E_\m{site}$ is in multiples of $kT$.}
 \end{figure*}
 
 With increasing $\Delta E_\m{site}$, tetrahedral sites are preferentially occupied with respect to octahedral sites: at higher values of $\Delta E_\m{site}$ all lithium ions preferentially occupy tetrahedral sites, with octahedral sites only occupied for $\xLi>3$ when the tetrahedral sites are fully occupied. 
@@ -343,14 +343,14 @@ The $c(1-c)$ factor gives a parabolic dependence with a maximum ionic conductivi
 By ``switching on'' additional physics: on-site energies and interactions between mobile ions, $f_\m{I}\neq1$, with $f_\m{I}$ a function of the interaction strengths, the lattice topology, and the carrier concentration. 
 The optimal $\xLi$ for a given material therefore depends on the behaviour of $f_\m{I}(x_\m{Li})$.
 
-The low computational cost of the LGMC simulations have allowed us to calculate an effective ionic conductivity $sigma^\prime$ as a function of $\left\{\xLi, \Delta E_\m{site}, E_\m{nn}\right\}$. 
+The low computational cost of the LGMC simulations have allowed us to calculate an effective ionic conductivity $\sigma^\prime$ as a function of $\left\{\xLi, \Delta E_\m{site}, E_\m{nn}\right\}$. 
 Considering this data set, we can pose the following question: what is the value of $\xLi$ that maximises the (effective) ionic conductivity, at each combination of $\Delta E_\m{site}, E_\m{nn}$
 
 At any combination of $\Delta E_\m{site}, E_\m{nn}$ we can identify the $\xLi$ that gives the maximum ionic conductivity, and then map how $\arg\max \sigma^\prime(\xLi)$ depends on the scale of interactions. 
 This defines a surface in model parameter space, which is shown as a contour plot in Fig.\ \ref{fig:max_sigma}.
 \begin{figure}[tb]
   \centering
-  \resizebox{9.5cm}{!}{\includegraphics*{max_sigma.pdf}} %
+  \resizebox{8cm}{!}{\includegraphics*{max_sigma.pdf}} %
     \caption{\label{fig:max_sigma}CAPTION}
 \end{figure}
 A wide range of ``optimal'' $\xLi$ values are identified. 
@@ -376,12 +376,40 @@ This fits with e.g.\ estimating model parameters from identifying those that rep
 
 \todo{Discuss: Kozinsky \emph{et al.} have  also proposed a fully ordered phase at $\xLi=6$, from a combined first-principles calculations and group theory analysis \cite{KozinskyEtAl_PhysRevLett2016}, with mixed octahedral and tetrahedral occupation.}
 
+\section{Supplementary Material}
+Supplementary material for this study is available as a GitHub repository \cite{garnet_LGMC_dataset_2017}. This repository contains (1) the complete data set used to support the findings of this study, (2) example scripts for running \texttt{lattice\_mc} simulations on a garnet lattice, and (3) a Jupyter {}notebook containing the code used to generate Figs.\ \ref{fig:non-interacting_data}--\ref{fig:conductivity_miniplots}.
+
 \section{Acknowledgements}
 B.\ J.\ M.\ acknowledges support from the Royal Society (UF130329). 
-B.\ J.\ M. would also like to thank M.~Burbano, M.\ Salanne, and S.\ Adams for stimulating discussions.
+B.\ J.\ M. would also like to thank M.~Burbano and M.~Salanne for stimulating discussions.
 
-\section{Supplementary Information}
-\todo{figures showing simulation data for combined $\Delta E_\m{site}, E_\m{nn}$ systems.}
+\todo{Check (and simplify) and document example simulation script in SI}
+
+\section{Appendix}
+
+\begin{figure*}[tb]
+  \centering
+  \resizebox{15cm}{!}{\includegraphics*{correlation_miniplots.pdf}} %
+    \caption{\label{fig:correlation_miniplots}CAPTION}
+\end{figure*}
+
+\begin{figure*}[tb]
+  \centering
+  \resizebox{15cm}{!}{\includegraphics*{site_occupation_miniplots.pdf}} %
+    \caption{\label{fig:site_occupation_miniplots}CAPTION}
+\end{figure*}
+
+\begin{figure*}[tb]
+  \centering
+  \resizebox{15cm}{!}{\includegraphics*{diffusion_miniplots.pdf}} %
+    \caption{\label{fig:diffusion_miniplots}CAPTION}
+\end{figure*}
+
+\begin{figure*}[tb]
+  \centering
+  \resizebox{15cm}{!}{\includegraphics*{conductivity_miniplots.pdf}} %
+    \caption{\label{fig:conductivity_miniplots}CAPTION}
+\end{figure*}
 
 \bibliography{Bibliography}
 \end{document}

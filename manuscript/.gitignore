@@ -6,5 +6,4 @@
 *.blg
 *.synctex.gz
 *.dvi
-.DS_Store
-*Notes.bib
+
