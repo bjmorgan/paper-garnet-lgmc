@@ -124,7 +124,7 @@ Every lattice site is either occupied or vacant, and during a simulation the mob
 These hops are randomly selected, with relative probabilities that satisfy the principle of detailed balance and represent the underlying model Hamiltonian. 
 The simplest model considered here is a ``non-interacting'' volume-exclusion--only model.\cite{Kutner_PhysLett1981} Double occupancy of sites is forbidden, and allowed hops are all equally likely. 
 Non-interacting models allow the pure geometric effect of the lattice to be evaluated, but neglect other interactions that may be significant in corresponding experimental systems. 
-For the garnet lattice, here we also consider the effect of nearest-neighbour interactions between mobile ions, described by a nearest-neighbour repulsion energy, $E_\m{nn}$, and interactions between single ions and the lattice, described by on-site energies for tetrahedral versus octahedral sites, $E_\m{T}$, $E_\m{O}$. 
+For the garnet lattice, here we also consider the effect of nearest-neighbour interactions between mobile ions, described by a nearest-neighbour repulsion energy, $E_\m{nn}$, and interactions between single ions and the lattice, described by on-site energies for tetrahedral versus octahedral sites, $E_\m{tet}$, $E_\m{oct}$. 
 The energy of any configuration of occupied sites, $j$ is given by
 \begin{equation}
   E = \sum_j n_j^\m{nn}E_\m{nn} + E_\m{site}^j,
@@ -158,17 +158,17 @@ where $\left<R^2\right>$ is the mean-squared displacement of the mobile ions, an
 where $\sum_i R_i$ is the \emph{net} displacement of all mobile particles. 
 In both cases the denominators correspond to the limiting behaviour for uncorrelated diffusion.
 
-To allow time-dependent properties to be evaluated, we perform our lattice-gas Monte Carlo simulations within a rejection-free kinetic Monte Carlo scheme \cite{Voter_RadiationEffectsInSolids2007}. 
-For each simulation step, $k$, the set of hop probabilities, $\set{P_{i,k}}$, are converted to rates, $\set{\Gamma_{i,k}}$ by scaling by a common prefactor of $10^{13}\u{s}^{-1}$. 
+To allow time-dependent properties to be evaluated, we perform our lattice-gas Monte Carlo simulations within a rejection-free kinetic Monte Carlo scheme.\cite{Voter_RadiationEffectsInSolids2007} 
+For each simulation step, $k$, the set of hop probabilities, $\set{P_{i,k}}$, are converted to rates, $\set{\Gamma_{i,k}}$, by scaling by a common prefactor of $\nu^\prime=10^{13}\u{s}^{-1}$. 
 After selecting a hop, the simulation time is updated by $\Delta t = Q_k^{-1}\ln\left(1/u\right)$, where $Q_k$ is the ``total rate''; $Q_k=\sum_i \Gamma_{i,k}$, and $u$ is a uniform random number $u\in\left(0,1\right]$. 
 This approach provides time-averaged site occupations, and directly calculated diffusion coefficients and ionic conductivities.
 
 Our lattice-gas kinetic Monte Carlo simulations were performed using the \texttt{lattice\_mc} code.\cite{Morgan_JOSS2017} 
 Simulations were performed for an ideal cubic $2\times2\times2$ garnet lattice, with 384 octahedral sites and 192 tetrahedral sites. 
-The lattice site coordinates were generated from the cubic high-temperature \chem{Li_7La_3Zr_2O_{12}} (LLZO) structure (ICSD \#422259),\cite{AwakaEtAl_ChemLett2011} with the centres of octahedra and tetrahedra defined by the oxygen sub-lattice used to define the corresponding site coordinates. 
-In cubic LLZO, each lithium-octahedron contains a ``split'' pair of distorted $96h$ sites, separated by $0.81\u{\AA}$. 
+The lattice site coordinates were generated from the cubic high-temperature \chem{Li_7La_3Zr_2O_{12}} (LLZO) structure,\cite{[{ICSD \#422259}] [{}] AwakaEtAl_ChemLett2011} with the centres of octahedra and tetrahedra defined by the oxygen sub-lattice used to define the corresponding site coordinates. 
+In cubic LLZO, each lithium-octahedron contains a ``split'' pair of distorted $96h$ sites, separated by $0.81\u{\angstrom}$. 
 The construction used here considers each octahedron as a single ideal $48g$ site. 
-The network of diffusion pathways includes connections between nearest-neighbour sites only, i.e.\ all connections are between neighbouring tetrahedral--octahedral pairs. \note{calculated diffusion coefficients are presently in $\u{bohr}^2\u{s}^{-1}$.} For each simulation, $n_\m{Li}$ mobile ions are randomly distributed across the lattice sites. 1,000 equilibration steps are performed before 10,000 production steps. 
+The network of diffusion pathways includes connections between nearest-neighbour sites only, i.e.\ all connections are between neighbouring tetrahedral--octahedral pairs. For each simulation, $n_\m{Li}$ mobile ions are randomly distributed across the lattice sites. 1,000 equilibration steps are performed before 10,000 production steps. 
 
 For each set of model parameters, $\set{E_\m{nn}, \Delta E_\m{site}}$, simulations were performed across the full range of possible lithium stoichiometry ($\xLi=9$ corresponds to $n_\m{Li}=576$). 
 For each system, data were collected as an average over 5,000 trajectories. 
@@ -186,7 +186,7 @@ Fig.~\ref{fig:non-interacting_data} shows the calculated self- and collective-co
 
 In the single particle limit, $\xLi\to0$, there are no blocking effects, and particles follow a random walk. 
 With increasing concentration of mobile ions, however, single particle diffusion increasingly deviates from random walk behaviour. 
-The tracer correlation factor, $f$, decreases from $f=1$ in the single particle limit $\xLi\to0$ to $f=0.25$ in the single vacancy limit $\xLi\to9$, with approximately linear dependence on $\xLi$\footnote{A linear least-squares fit to these data gives $R^2=0.9974$.}.
+The tracer correlation factor, $f$, decreases from $f=1$ in the single particle limit $\xLi\to0$ to $f=0.25$ in the single vacancy limit $\xLi\to9$, with approximately linear dependence on $\xLi$.\footnote{A linear least-squares fit to these data gives $R^2=0.9974$.}
 
 The magnitude of the tracer correlation effect for different lattice geometries can characterised by considering $f$ in the limit of a single vacancy, $f_\m{v}$. 
 For the garnet lattice this is the limit $\xLi\to9$. 
@@ -195,8 +195,8 @@ For the garnet lattice, $f_v=0.25$.
 This is smaller than for all of the other 3D lattices, by at least a factor of 2, corresponding to unusually strong correlation effects. 
 This result can be understood as a consequence of the particular garnet lattice geometry. 
 For a general set of 3D lattices, as the number of nearest neighbours of each lattice site, $z$, decreases, $f_v$ also decreases, and correlation effects become more significant. 
-The garnet lattice has both 4-coordinate (tetrahedral) and 2-coordinate (octahedral) sites, and long ranged diffusion follows an alternating T$\to$O$\to$T$\to$O pattern. 
-The calculated value of $f_v=0.25$ is halfway between the values for the 4-coordinate diamond lattice ($f_v=0.5$) and for a 1-D chain, where every site is 2-coordinate ($f_v=0$). 
+The garnet lattice has both 4-coordinate (tetrahedral) and 2-coordinate (octahedral) sites, and long ranged diffusion follows an alternating tet$\to$oct$\to$tet$\to$oct sequence. 
+The calculated value of $f_v=0.25$ is halfway between the values for the 4-coordinate diamond lattice ($f_v=0.5$) and for a 1-D chain, where every site is 2-coordinate ($f_v=0$).\cite{Mehrer_DiffusionBook} 
 This suggests that the extreme low value of $f_v$ for the garnet lattice is a consequence of the low coordination of the lattice sites, in particular the local 1D coordination at the octahedral sites, which act as bottlenecks for long-ranged diffusion. 
 
 \begin{table}[htb]
@@ -217,9 +217,9 @@ This suggests that the extreme low value of $f_v$ for the garnet lattice is a co
 For any non-interacting system, the hops made by different particles are unocorrelated, and $f_I=1$ for all $\xLi$, making $H_\m{R}=f$. 
 There are also no correlations between site occupations, and the mobile particles are randomly distributed over the available octahedral and tetrahedral sites, with a 2:1 population ratio that reflects the underlying lattice geometry.
 
-We also consider three measures of ionic transport in this system.\footnote{\todo{Note that $\hrpa$ is *not* the hopping prefactor used in these equations (there is a vacancy--coordination-number scaling)}Because the lattice-gas model used here considers hops as barrierless, where hopping probabilities only depend on  energy differences between intial and final states, the effective transport coefficients calculated here cannot be directly compared to experimental values. 
-Introducing fixed barrier heights for tet$\leftrightarrow$oct hops is equivalent to scaling the hopping prefactor $\hrpa$, which preserves \emph{relative} differences in the transport coefficients presented here. 
-A more realistic model would need to account for the influence of local site occupations on individual hopping barriers, see e.g.\ Ref.\ \cite{VanderVenAndCeder_HandbookofMaterialsModelling2010}, and would give quantitative deviations from the trends presented here.} Fig.~\ref{fig:non-interacting_data}(c) shows the tracer diffusion coefficient, $D^*$ (Eqn.~\ref{eqn:correlated_diffusion}) and the ``jump diffusion coefficient'', $D_\m{J}$\cite{VanDerVenEtAl_AccChemRes2013}, calculated as
+We also consider three measures of ionic transport in this system.\footnote{Because the lattice-gas model used here considers hops as barrierless, where hopping probabilities only depend on  energy differences between intial and final states, the effective transport coefficients calculated here cannot be directly compared to experimental values. 
+Introducing fixed barrier heights for tet$\leftrightarrow$oct hops is equivalent to scaling the hopping prefactor $\nu^\prime$, which preserves \emph{relative} differences in the transport coefficients presented here. 
+A more realistic model would need to account for the influence of local site occupations on individual hopping barriers, see e.g.\ Ref.\ \cite{VanderVenAndCeder_HandbookofMaterialsModelling2010}, and would give quantitative deviations from the trends presented here.} Fig.~\ref{fig:non-interacting_data}(c) shows the tracer diffusion coefficient, $D^*$ (Eqn.~\ref{eqn:correlated_diffusion}) and the ``jump diffusion coefficient'', $D_\m{J}$,\cite{VanDerVenEtAl_AccChemRes2013} calculated as
 \begin{equation}
   D_\m{J}=\frac{\left|\sum_iR_i\right|^2}{6Nt}.
 \end{equation}
@@ -352,13 +352,11 @@ This fits with e.g.\ estimating model parameters from identifying those that rep
 \todo{Discuss: Kozinsky \emph{et al.} have  also proposed a fully ordered phase at $\xLi=6$, from a combined first-principles calculations and group theory analysis \cite{KozinskyEtAl_PhysRevLett2016}, with mixed octahedral and tetrahedral occupation.}
 
 \section{Supplementary Material}
-Supplementary material for this study is available as a GitHub repository \cite{garnet_LGMC_dataset_2017}. This repository contains (1) the complete data set used to support the findings of this study, (2) example scripts for running \texttt{lattice\_mc} simulations on a garnet lattice, and (3) a Jupyter {}notebook containing the code used to generate Figs.\ \ref{fig:non-interacting_data}--\ref{fig:conductivity_miniplots}. The \texttt{lattice\_mc} code is available under the MIT license \cite{Morgan_JOSS2017}.
+Supplementary material for this study is available as a GitHub repository \cite{garnet_LGMC_dataset_2017}. This repository contains (1) the complete data set used to support the findings of this study, (2) example scripts for running \texttt{lattice\_mc} simulations on a garnet lattice and collating output data, and (3) a Jupyter notebook containing the code used to generate Figs.\ \ref{fig:non-interacting_data}--\ref{fig:conductivity_miniplots}. The \texttt{lattice\_mc} code is available under the MIT license.\cite{Morgan_JOSS2017}
 
 \section{Acknowledgements}
 B.\ J.\ M.\ acknowledges support from the Royal Society (UF130329). 
 B.\ J.\ M. would also like to thank M.~Burbano and M.~Salanne for stimulating discussions.
-
-\todo{Check (and simplify) and document example simulation script in SI}
 
 \section{Appendix}
 
